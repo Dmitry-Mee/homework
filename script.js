@@ -1,6 +1,6 @@
 ﻿const btn = document.getElementById('main-button');
 const textElement = document.getElementById('dynamic-text');
-const input = document.getElemetById('user-input'); // Находим поле ввода
+const input = document.getElementById('user-input'); // Находим поле ввода
 const list = document.getElementById('todo-list');
 
 btn.onclick = function () {
@@ -38,6 +38,7 @@ btn.onclick = function () {
 
         // 1. Создаем элемент списка
         const newEntry = document.createElement('li');
+        console.log("Добавлен новый элемент списка для пользователя:", userName);
         newEntry.textContent = "Пользователь: " + userName + " "; // Добавим пробел в конце
 
         // 2. Создаем кнопку удаления внутри этого li
