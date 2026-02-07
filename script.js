@@ -59,20 +59,35 @@ btn.onclick = function () {
 // 5. НОВАЯ ЛОГИКА: Погода (Екатеринбург)
 async function updateWeather() {
     try {
-        // Добавили параметр &current=temperature_2m — это современный стандарт этого API
-        const response = await fetch('https://api.open-meteo.com');
+        // Запрашиваем оба варианта сразу, чтобы наверняка
+        const url = 'https://api.open-meteo.com';
+        const response = await fetch(url);
         const data = await response.json();
 
-        console.log("Ответ от сервера:", data); // Посмотри в консоль, увидишь структуру
+        console.log("Что прислал сервер:", data); // Посмотри это в консоли!
 
-        // Новая структура данных: данные теперь лежат в data.current.temperature_2m
-        const temp = Math.round(data.current.temperature_2m);
+        let temp;
 
-        if (tempElement) {
-            tempElement.textContent = temp + "°C";
-            // Если холодно — голубой, если тепло — оранжевый
-            tempElement.style.color = temp < 0 ? "#00d4ff" : "#ff8c00";
+        // Проверяем все возможные места, где может лежать температура
+        if (data.current && data.current.temperature_2m !== undefined) {
+            temp = Math.round(data.current.temperature_2m);
+        } else if (data.current_weather && data.current_weather.temperature !== undefined) {
+            temp = Math.round(data.current_weather.temperature);
         }
+
+        if (temp !== undefined) {
+            tempElement.textContent = temp + "°C";
+            tempElement.style.color = temp < 0 ? "#00d4ff" : "#ff8c00";
+
+            // Находим наш блок для совета (если ты его добавил в HTML)
+            const advice = document.getElementById('weather-advice');
+            if (advice) {
+                advice.textContent = temp < -15 ? "Дима, надень шапку!" : "Погода норм";
+            }
+        } else {
+            throw new Error("Температура не найдена в ответе");
+        }
+
     } catch (e) {
         console.error("Ошибка получения погоды:", e);
         if (tempElement) tempElement.textContent = "Ошибка";
