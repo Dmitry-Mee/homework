@@ -3,6 +3,29 @@ const textElement = document.getElementById('dynamic-text');
 const input = document.getElementById('user-input'); // Находим поле ввода
 const list = document.getElementById('todo-list');
 
+const themeBtn = document.getElementById('theme-toggle');
+
+// 1. ПРОВЕРКА ПРИ ЗАГРУЗКЕ: Была ли сохранена темная тема?
+const savedTheme = localStorage.getItem('theme'); // Достаем значение по ключу 'theme'
+
+if (savedTheme === 'dark') {
+    document.body.classList.add('dark-theme'); // Если в памяти 'dark', включаем её
+}
+
+// 2. ЛОГИКА КЛИКА ПО КНОПКЕ
+themeBtn.onclick = function () {
+    // toggle возвращает true, если класс добавился, и false, если удалился
+    document.body.classList.toggle('dark-theme');
+
+    // Проверяем: если сейчас у body есть класс 'dark-theme'
+    if (document.body.classList.contains('dark-theme')) {
+        localStorage.setItem('theme', 'dark'); // Сохраняем это в память
+    } else {
+        localStorage.setItem('theme', 'light'); // Иначе сохраняем 'light'
+    }
+};
+
+
 const savedName = localStorage.getItem('lastUser');
 
 if (savedName) {

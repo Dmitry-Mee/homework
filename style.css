@@ -1,19 +1,26 @@
-﻿body {
-    margin: 0;
-    display: flex;
-    justify-content: center; /* Центр по горизонтали */
-    align-items: center; /* Центр по вертикали */
-    min-height: 100vh; /* Высота во весь экран */
-    background-color: #f4f4f9;
-    font-family: sans-serif;
+﻿:root {
+    --bg-color: #f4f4f9;
+    --card-bg: white;
+    --text-color: #333;
+    --accent-color: #3357FF;
+}
+
+/* А это будет включаться, когда у body появится класс .dark-theme */
+body.dark-theme {
+    --bg-color: #1a1a1a;
+    --card-bg: #2d2d2d;
+    --text-color: #f4f4f9;
+    --accent-color: #5d7cff;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.4s, color 0.4s; /* Плавность! */
 }
 
 .card {
-    background: white;
-    padding: 40px; /* Внутренние отступы */
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    text-align: center;
+    background-color: var(--card-bg);
 }
 
 input {
@@ -27,6 +34,8 @@ input {
 }
 
 #main-button {
+    background-color: var(--accent-color);
+    color: white;
     border: none;
     transition: 0.3s;
     padding: 15px 30px;
