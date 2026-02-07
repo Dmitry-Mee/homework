@@ -58,41 +58,43 @@ btn.onclick = function () {
 
 // 5. НОВАЯ ЛОГИКА: Погода (Екатеринбург)
 async function updateWeather() {
+    const tempElement = document.getElementById('temp-value');
+    const apiKey = '5QTFSE8GZUJ8BLX3ZSFE2YEMG'; // ключ
+    const city = 'Yekaterinburg';
+
+    // Формируем запрос: Екатеринбург, метрическая система (Цельсии), язык RU
+    const url = `https://weather.visualcrossing.com{city}&aggregateHours=24&unitGroup=metric&shortColumnNames=false&contentType=json&key=${apiKey}`;
+
     try {
-        // Запрашиваем оба варианта сразу, чтобы наверняка
-        const url = 'https://api.open-meteo.com';
         const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status}`);
+        }
+
         const data = await response.json();
+        console.log("Данные от Visual Crossing:", data);
 
-        console.log("Что прислал сервер:", data); // Посмотри это в консоли!
+        // У этого API данные лежат в массиве locations
+        const locationData = Object.values(data.locations)[0];
+        const currentTemp = Math.round(locationData.values[0].temp);
+        const description = locationData.values[0].conditions;
 
-        let temp;
+        if (tempElement) {
+            tempElement.textContent = `${currentTemp}°C`;
+            tempElement.style.color = currentTemp < 0 ? "#00d4ff" : "#ff8c00";
 
-        // Проверяем все возможные места, где может лежать температура
-        if (data.current && data.current.temperature_2m !== undefined) {
-            temp = Math.round(data.current.temperature_2m);
-        } else if (data.current_weather && data.current_weather.temperature !== undefined) {
-            temp = Math.round(data.current_weather.temperature);
+            // Если у тебя есть элемент для описания, можно добавить и его
+            const descElement = document.getElementById('weather-desc');
+            if (descElement) descElement.textContent = description;
         }
 
-        if (temp !== undefined) {
-            tempElement.textContent = temp + "°C";
-            tempElement.style.color = temp < 0 ? "#00d4ff" : "#ff8c00";
-
-            // Находим наш блок для совета (если ты его добавил в HTML)
-            const advice = document.getElementById('weather-advice');
-            if (advice) {
-                advice.textContent = temp < -15 ? "Дима, надень шапку!" : "Погода норм";
-            }
-        } else {
-            throw new Error("Температура не найдена в ответе");
-        }
-
-    } catch (e) {
-        console.error("Ошибка получения погоды:", e);
-        if (tempElement) tempElement.textContent = "Ошибка";
+    } catch (error) {
+        console.error("Ошибка Visual Crossing:", error);
+        if (tempElement) tempElement.textContent = "Ошибка API";
     }
 }
+
 
 // 6. Запуск всего при старте
 renderTasks();
