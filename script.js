@@ -57,45 +57,23 @@ btn.onclick = function () {
 };
 
 // 5. НОВАЯ ЛОГИКА: Погода (Екатеринбург)
-async function updateWeather() {
-    const tempElement = document.getElementById('temp-value');
-    const apiKey = '5QTFSE8GZUJ8BLX3ZSFE2YEMG'; // ключ
-    const city = 'Yekaterinburg';
-
-    // Формируем запрос: Екатеринбург, метрическая система (Цельсии), язык RU
-    const url = `https://weather.visualcrossing.com{city}&aggregateHours=24&unitGroup=metric&shortColumnNames=false&contentType=json&key=${apiKey}`;
+async function getCatFact() {
+    const factElement = document.getElementById('cat-fact');
+    const url = 'https://catfact.ninja'; // Самый стабильный API
 
     try {
         const response = await fetch(url);
-
-        if (!response.ok) {
-            throw new Error(`Ошибка: ${response.status}`);
-        }
-
         const data = await response.json();
-        console.log("Данные от Visual Crossing:", data);
 
-        // У этого API данные лежат в массиве locations
-        const locationData = Object.values(data.locations)[0];
-        const currentTemp = Math.round(locationData.values[0].temp);
-        const description = locationData.values[0].conditions;
-
-        if (tempElement) {
-            tempElement.textContent = `${currentTemp}°C`;
-            tempElement.style.color = currentTemp < 0 ? "#00d4ff" : "#ff8c00";
-
-            // Если у тебя есть элемент для описания, можно добавить и его
-            const descElement = document.getElementById('weather-desc');
-            if (descElement) descElement.textContent = description;
-        }
+        console.log("Успех! Данные о кошках:", data);
+        factElement.textContent = data.fact;
 
     } catch (error) {
-        console.error("Ошибка Visual Crossing:", error);
-        if (tempElement) tempElement.textContent = "Ошибка API";
+        console.error("Ошибка тестового API:", error);
+        factElement.textContent = "Не удалось загрузить даже котиков :(";
     }
 }
 
+getCatFact(); // Запускаем
 
-// 6. Запуск всего при старте
 renderTasks();
-updateWeather();
