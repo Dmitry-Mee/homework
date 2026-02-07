@@ -1,19 +1,22 @@
 ﻿body {
-    display: flex; /* Включаем магию флексов */
-    justify-content: center; /* Центрируем по горизонтали */
-    align-items: center; /* Центрируем по вертикали */
-    height: 100vh; /* Растягиваем body на всю высоту экрана */
-    margin: 0; /* Убираем стандартные отступы браузера */
-    background-color: #f0f2f5;
+    margin: 0;
+    display: flex;
+    justify-content: center; /* Центр по горизонтали */
+    align-items: center; /* Центр по вертикали */
+    min-height: 100vh; /* Высота во весь экран */
+    background-color: #f4f4f9;
+    font-family: sans-serif;
 }
 
 .card {
     background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 40px; /* Внутренние отступы */
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     text-align: center;
 }
+
+
 #main-button {
     border: none;
     transition: 0.3s;
