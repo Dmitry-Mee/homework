@@ -73,7 +73,7 @@ input:focus {
             border: none;
             cursor: pointer;
         }
-@media (max-width: 600px) {
+@media (max-width: 900px) {
     body {
         background-color: lightblue; /* На мобилках фон станет голубым */
     }
