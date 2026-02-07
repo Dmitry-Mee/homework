@@ -4,10 +4,10 @@ const input = document.getElementById('user-input'); // Находим поле 
 const list = document.getElementById('todo-list');
 
 btn.onclick = function () {
-    console.log("Кнопка нажата! Введено имя: ", userName);
+    
 
     const userName = input.value; // Забираем текст из поля
-
+    console.log("Кнопка нажата! Введено имя: ", userName);
     if (userName === "") {
         textElement.textContent = "Пожалуйста, введи имя!";
         textElement.style.color = "red";
