@@ -1,10 +1,12 @@
-﻿const btn = document.getElementById('main-button');
+﻿// 1. Находим все элементы (DOM)
+const btn = document.getElementById('main-button');
 const textElement = document.getElementById('dynamic-text');
 const input = document.getElementById('user-input');
 const list = document.getElementById('todo-list');
 const themeBtn = document.getElementById('theme-toggle');
+const tempElement = document.getElementById('temp-value'); // Для погоды
 
-// 1. ТЕМНАЯ ТЕМА (Логика)
+// 2. Логика темной темы
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme === 'dark') {
     document.body.classList.add('dark-theme');
@@ -12,36 +14,23 @@ if (savedTheme === 'dark') {
 
 themeBtn.onclick = function () {
     document.body.classList.toggle('dark-theme');
-    if (document.body.classList.contains('dark-theme')) {
-        localStorage.setItem('theme', 'dark');
-    } else {
-        localStorage.setItem('theme', 'light');
-    }
+    localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
 };
 
-// 2. ЗАГРУЗКА ИМЕНИ И СПИСКА
-const savedName = localStorage.getItem('lastUser');
-if (savedName) {
-    textElement.textContent = "С возвращением, " + savedName + "!";
-}
-
+// 3. Работа со списком задач (Массив + LocalStorage)
 let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
 
-// 3. ФУНКЦИИ ОТРИСОВКИ И СОХРАНЕНИЯ (Важно: они стоят отдельно)
 function renderTasks() {
     list.innerHTML = "";
     tasks.forEach((task, index) => {
         const newEntry = document.createElement('li');
         newEntry.textContent = task;
-
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = "Удалить";
-
-        deleteBtn.onclick = function () {
+        deleteBtn.onclick = () => {
             tasks.splice(index, 1);
             saveAndRender();
         };
-
         newEntry.appendChild(deleteBtn);
         list.appendChild(newEntry);
     });
@@ -52,71 +41,44 @@ function saveAndRender() {
     renderTasks();
 }
 
-// 4. ГЛАВНАЯ КНОПКА (Добавление)
+// 4. Логика добавления пользователя
 btn.onclick = function () {
     const userName = input.value;
     if (userName === "") {
         textElement.textContent = "Пожалуйста, введи имя!";
         textElement.style.color = "red";
-    } else if (userName === "Admin") {
-        textElement.textContent = "Hi, Admin!";
-        textElement.style.color = "gold";
     } else {
-        textElement.textContent = "Привет, " + userName + "! Ты делаешь успехи в JS!";
-        textElement.style.color = ""; // Сброс к переменным CSS
-
+        textElement.textContent = "Привет, " + userName + "!";
+        textElement.style.color = "";
         tasks.push("Пользователь: " + userName);
-        localStorage.setItem('lastUser', userName);
         saveAndRender();
         input.value = "";
-        getFact();
     }
 };
 
-// 5. ЗАПУСК ПРИ ЗАГРУЗКЕ
-renderTasks();
-
-async function getFact() {
-    const quoteElement = document.getElementById('quote-text');
-    try {
-        // Запрашиваем случайный факт на английском
-        const response = await fetch('https://uselessfacts.jsph.pl');
-        const data = await response.json();
-
-        // Выводим факт на страницу
-        quoteElement.textContent = "Интересный факт: " + data.text;
-        quoteElement.style.fontStyle = "italic";
-        quoteElement.style.fontSize = "0.9em";
-        quoteElement.style.marginTop = "10px";
-    } catch (error) {
-        quoteElement.textContent = "Не удалось загрузить факт :(";
-        console.error("Ошибка API:", error);
-    }
-}
-
+// 5. НОВАЯ ЛОГИКА: Погода (Екатеринбург)
 async function updateWeather() {
     try {
-        // Запрос к API (Екб: 56.84, 60.61)
+        // Добавили параметр &current=temperature_2m — это современный стандарт этого API
         const response = await fetch('https://api.open-meteo.com');
         const data = await response.json();
 
-        const temp = Math.round(data.current_weather.temperature);
-        const code = data.current_weather.weathercode; // Код погоды (ясно, снег и т.д.)
+        console.log("Ответ от сервера:", data); // Посмотри в консоль, увидишь структуру
 
-        const tempElement = document.getElementById('temp-value');
-        tempElement.textContent = temp + "°C";
+        // Новая структура данных: данные теперь лежат в data.current.temperature_2m
+        const temp = Math.round(data.current.temperature_2m);
 
-        // ЛОГИКА: Меняем стиль в зависимости от температуры
-        if (temp < -10) {
-            tempElement.style.color = "#00d4ff"; // Холодно — голубой
-        } else if (temp > 0) {
-            tempElement.style.color = "#ff8c00"; // Тепло — оранжевый
+        if (tempElement) {
+            tempElement.textContent = temp + "°C";
+            // Если холодно — голубой, если тепло — оранжевый
+            tempElement.style.color = temp < 0 ? "#00d4ff" : "#ff8c00";
         }
-
-        console.log("Данные о погоде получены успешно!");
-    } catch (error) {
-        console.error("Ошибка получения погоды:", error);
+    } catch (e) {
+        console.error("Ошибка получения погоды:", e);
+        if (tempElement) tempElement.textContent = "Ошибка";
     }
 }
 
+// 6. Запуск всего при старте
+renderTasks();
 updateWeather();
