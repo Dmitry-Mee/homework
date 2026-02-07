@@ -1,4 +1,9 @@
-﻿const btn = document.getElementById('main-button');
+﻿const savedName = localStorage.getItem('lastUser');
+
+if (savedName) {
+    textElement.textContent = "С возвращением, " + savedName + "!";
+}
+const btn = document.getElementById('main-button');
 const textElement = document.getElementById('dynamic-text');
 const input = document.getElementById('user-input'); // Находим поле ввода
 const list = document.getElementById('todo-list');
@@ -60,6 +65,8 @@ btn.onclick = function () {
 
         // 5. Очищаем поле ввода
         input.value = "";
+        localStorage.setItem('lastUser', userName);
+        console.log("Имя сохранено в памяти браузера!");
 
     }
     }
