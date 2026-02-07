@@ -15,7 +15,15 @@
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     text-align: center;
 }
-
+input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px; /* Тот самый margin, чтобы кнопка не липла */
+    display: block; /* Чтобы поле было на отдельной строке */
+    width: 100%; /* Чтобы оно было по ширине карточки */
+    box-sizing: border-box; /* Важное свойство, чтобы padding не расширял ширину сверх 100% */
+}
 
 #main-button {
     border: none;

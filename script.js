@@ -1,19 +1,19 @@
 ﻿const btn = document.getElementById('main-button');
-const text = document.getElementById('dynamic-text');
-
-const phrases = [
-    "Я уже умею работать с GitHub Pages!",
-    "Я победил кодировку UTF-8!",
-    "JavaScript — это сила.",
-    "Мой код становится лучше с каждым коммитом."
-];
+const textElement = document.getElementById('dynamic-text');
+const input = document.getElementById('user-input'); // Находим поле ввода
 
 btn.onclick = function () {
-    // 1. Меняем текст
-    const randomIndex = Math.floor(Math.random() * phrases.length);
-    text.textContent = phrases[randomIndex];
+    const userName = input.value; // Забираем текст из поля
 
-    // 2. Меняем цвет кнопки на случайный
-    const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
-    btn.style.backgroundColor = randomColor;
+    if (userName === "") {
+        textElement.textContent = "Пожалуйста, введи имя!";
+        textElement.style.color = "red";
+    } else {
+        textElement.textContent = "Привет, " + userName + "! Ты делаешь успехи в JS!";
+        textElement.style.color = "black";
+
+        // Меняем цвет кнопки, как и раньше
+        const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        btn.style.backgroundColor = randomColor;
+    }
 };
