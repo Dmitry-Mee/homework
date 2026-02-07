@@ -2,13 +2,39 @@
 const textElement = document.getElementById('dynamic-text');
 const input = document.getElementById('user-input'); // Находим поле ввода
 const list = document.getElementById('todo-list');
+
 const savedName = localStorage.getItem('lastUser');
 
 if (savedName) {
     textElement.textContent = "С возвращением, " + savedName + "!";
 }
+// 1. Пытаемся загрузить старые задачи или создаем пустой массив, если их нет
+let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
+function renderTasks() {
+    list.innerHTML = ""; // Сначала очищаем весь список на экране
+    tasks.forEach((task, index) => {
+        const newEntry = document.createElement('li');
+        newEntry.textContent = task;
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = "Удалить";
+
+        deleteBtn.onclick = function () {
+            tasks.splice(index, 1); // Удаляем из массива по индексу
+            saveAndRender(); // Пересохраняем и перерисовываем
+        };
+
+        newEntry.appendChild(deleteBtn);
+        list.appendChild(newEntry);
+    });
+}
+// 3. Функция для сохранения в память и обновления экрана
+function saveAndRender() {
+    localStorage.setItem('myTasks', JSON.stringify(tasks));
+    renderTasks();
+}
 btn.onclick = function () {
-    
+
 
     const userName = input.value; // Забираем текст из поля
     console.log("Кнопка нажата! Введено имя: ", userName);
@@ -18,7 +44,7 @@ btn.onclick = function () {
         textElement.style.fontFamily = "";
         textElement.style.fontWeight = "";
         textElement.style.fontSize = "";
-        
+
     }
     else if (userName === "Admin") {
         textElement.textContent = "Hi, Admin!";
@@ -38,34 +64,13 @@ btn.onclick = function () {
         const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
         btn.style.backgroundColor = randomColor;
 
-        // --- РАБОТА СО СПИСКОМ ---
-
-        // 1. Создаем элемент списка
-        const newEntry = document.createElement('li');
-        console.log("Добавлен новый элемент списка для пользователя:", userName);
-        newEntry.textContent = "Пользователь: " + userName + " "; // Добавим пробел в конце
-
-        // 2. Создаем кнопку удаления внутри этого li
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = "Удалить";
-        deleteBtn.style.marginLeft = "10px"; // Небольшой отступ
-        deleteBtn.style.padding = "2px 8px"; // Сделаем её поменьше основной
-
-        // 3. Логика удаления: при клике на ЭТУ кнопку, удаляем ЭТОТ li
-        deleteBtn.onclick = function () {
-            console.warn("Удаляем пользователя: " + userName); // Выведет желтое предупреждение
-            newEntry.remove();
-        };
-
-
-        // 4. Собираем конструктор: кладем кнопку ВНУТРЬ li, а li — ВНУТРЬ списка
-        newEntry.appendChild(deleteBtn);
-        list.appendChild(newEntry);
-
-        // 5. Очищаем поле ввода
-        input.value = "";
+        tasks.push("Пользователь: " + userName);
         localStorage.setItem('lastUser', userName);
-        console.log("Имя сохранено в памяти браузера!");
+        saveAndRender();
+
+        input.value = ""; // Очищаем поле
 
     }
-    }
+}
+
+renderTasks();

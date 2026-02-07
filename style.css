@@ -73,10 +73,16 @@ input:focus {
             border: none;
             cursor: pointer;
         }
+
+    #todo-list li {
+        animation: fadeIn 0.5s ease forwards;
+    }
+
 @media (max-width: 900px) {
     body {
         background-color: lightblue; /* На мобилках фон станет голубым */
     }
+
     .card {
         width: 90%; /* На маленьких экранах карточка почти на всю ширину */
         padding: 20px; /* Уменьшаем внутренние отступы */
@@ -84,5 +90,17 @@ input:focus {
 
     #main-button {
         width: 100%; /* Кнопка на всю ширину для удобства нажатия пальцем */
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
