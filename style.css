@@ -63,3 +63,10 @@ input:focus {
         border-radius: 4px;
         border-left: 5px solid #3357FF; /* Красивая полоска сбоку */
     }
+#todo-list li button {
+    background-color: #ff4d4d;
+    color: white;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+}
