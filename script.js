@@ -94,4 +94,29 @@ async function getFact() {
     }
 }
 
-<script src="https://www.gismeteo.ru"></script>
+async function updateWeather() {
+    try {
+        // Запрос к API (Екб: 56.84, 60.61)
+        const response = await fetch('https://api.open-meteo.com');
+        const data = await response.json();
+
+        const temp = Math.round(data.current_weather.temperature);
+        const code = data.current_weather.weathercode; // Код погоды (ясно, снег и т.д.)
+
+        const tempElement = document.getElementById('temp-value');
+        tempElement.textContent = temp + "°C";
+
+        // ЛОГИКА: Меняем стиль в зависимости от температуры
+        if (temp < -10) {
+            tempElement.style.color = "#00d4ff"; // Холодно — голубой
+        } else if (temp > 0) {
+            tempElement.style.color = "#ff8c00"; // Тепло — оранжевый
+        }
+
+        console.log("Данные о погоде получены успешно!");
+    } catch (error) {
+        console.error("Ошибка получения погоды:", error);
+    }
+}
+
+updateWeather();
