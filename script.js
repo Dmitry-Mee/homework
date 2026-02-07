@@ -1,40 +1,35 @@
 ﻿const btn = document.getElementById('main-button');
 const textElement = document.getElementById('dynamic-text');
-const input = document.getElementById('user-input'); // Находим поле ввода
+const input = document.getElementById('user-input');
 const list = document.getElementById('todo-list');
-
 const themeBtn = document.getElementById('theme-toggle');
 
-// 1. ПРОВЕРКА ПРИ ЗАГРУЗКЕ: Была ли сохранена темная тема?
-const savedTheme = localStorage.getItem('theme'); // Достаем значение по ключу 'theme'
-
+// 1. ТЕМНАЯ ТЕМА (Логика)
+const savedTheme = localStorage.getItem('theme');
 if (savedTheme === 'dark') {
-    document.body.classList.add('dark-theme'); // Если в памяти 'dark', включаем её
+    document.body.classList.add('dark-theme');
 }
 
-// 2. ЛОГИКА КЛИКА ПО КНОПКЕ
 themeBtn.onclick = function () {
-    // toggle возвращает true, если класс добавился, и false, если удалился
     document.body.classList.toggle('dark-theme');
-
-    // Проверяем: если сейчас у body есть класс 'dark-theme'
     if (document.body.classList.contains('dark-theme')) {
-        localStorage.setItem('theme', 'dark'); // Сохраняем это в память
+        localStorage.setItem('theme', 'dark');
     } else {
-        localStorage.setItem('theme', 'light'); // Иначе сохраняем 'light'
+        localStorage.setItem('theme', 'light');
     }
 };
 
-
+// 2. ЗАГРУЗКА ИМЕНИ И СПИСКА
 const savedName = localStorage.getItem('lastUser');
-
 if (savedName) {
     textElement.textContent = "С возвращением, " + savedName + "!";
 }
-// 1. Пытаемся загрузить старые задачи или создаем пустой массив, если их нет
+
 let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
+
+// 3. ФУНКЦИИ ОТРИСОВКИ И СОХРАНЕНИЯ (Важно: они стоят отдельно)
 function renderTasks() {
-    list.innerHTML = ""; // Сначала очищаем весь список на экране
+    list.innerHTML = "";
     tasks.forEach((task, index) => {
         const newEntry = document.createElement('li');
         newEntry.textContent = task;
@@ -43,57 +38,39 @@ function renderTasks() {
         deleteBtn.textContent = "Удалить";
 
         deleteBtn.onclick = function () {
-            tasks.splice(index, 1); // Удаляем из массива по индексу
-            saveAndRender(); // Пересохраняем и перерисовываем
+            tasks.splice(index, 1);
+            saveAndRender();
         };
 
         newEntry.appendChild(deleteBtn);
         list.appendChild(newEntry);
     });
 }
-// 3. Функция для сохранения в память и обновления экрана
+
 function saveAndRender() {
     localStorage.setItem('myTasks', JSON.stringify(tasks));
     renderTasks();
 }
+
+// 4. ГЛАВНАЯ КНОПКА (Добавление)
 btn.onclick = function () {
-
-
-    const userName = input.value; // Забираем текст из поля
-    console.log("Кнопка нажата! Введено имя: ", userName);
+    const userName = input.value;
     if (userName === "") {
         textElement.textContent = "Пожалуйста, введи имя!";
         textElement.style.color = "red";
-        textElement.style.fontFamily = "";
-        textElement.style.fontWeight = "";
-        textElement.style.fontSize = "";
-
-    }
-    else if (userName === "Admin") {
+    } else if (userName === "Admin") {
         textElement.textContent = "Hi, Admin!";
-        textElement.style.fontFamily = "cursive";
-        textElement.style.fontWeight = "bold";
-        textElement.style.fontSize = "24px";
         textElement.style.color = "gold";
-    }
-    else {
+    } else {
         textElement.textContent = "Привет, " + userName + "! Ты делаешь успехи в JS!";
-        textElement.style.color = "black";
-        textElement.style.fontFamily = "";
-        textElement.style.fontWeight = "";
-        textElement.style.fontSize = "";
-
-        // Меняем цвет кнопки, как и раньше
-        const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
-        btn.style.backgroundColor = randomColor;
+        textElement.style.color = ""; // Сброс к переменным CSS
 
         tasks.push("Пользователь: " + userName);
         localStorage.setItem('lastUser', userName);
         saveAndRender();
-
-        input.value = ""; // Очищаем поле
-
+        input.value = "";
     }
-}
+};
 
+// 5. ЗАПУСК ПРИ ЗАГРУЗКЕ
 renderTasks();

@@ -16,11 +16,22 @@ body.dark-theme {
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    transition: background-color 0.4s, color 0.4s; /* Плавность! */
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    transition: background-color 0.4s, color 0.4s;
 }
 
 .card {
     background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 350px; /* Фиксируем ширину, чтобы не прыгала */
 }
 
 input {
@@ -41,6 +52,7 @@ input {
     padding: 15px 30px;
     border-radius: 50px;
     cursor: pointer;
+    transition: 0.3s;
 }
     /* Эффект для кнопки при наведении */
     #main-button:hover {
@@ -68,11 +80,16 @@ input:focus {
 }
 
     #todo-list li {
-        background: #eee;
+        background-color: rgba(128, 128, 128, 0.1); /* Полупрозрачный фон */
+        color: var(--text-color); /* Цвет текста из переменной */
         margin-bottom: 5px;
-        padding: 8px;
+        padding: 10px;
         border-radius: 4px;
-        border-left: 5px solid #3357FF; /* Красивая полоска сбоку */
+        border-left: 5px solid var(--accent-color); /* Полоска в цвет темы */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        animation: fadeIn 0.5s ease forwards;
     }
 
         #todo-list li button {
@@ -87,18 +104,14 @@ input:focus {
         animation: fadeIn 0.5s ease forwards;
     }
 
-@media (max-width: 900px) {
-    body {
-        background-color: lightblue; /* На мобилках фон станет голубым */
-    }
-
+@media (max-width: 600px) {
     .card {
-        width: 90%; /* На маленьких экранах карточка почти на всю ширину */
-        padding: 20px; /* Уменьшаем внутренние отступы */
+        width: 95%;
+        padding: 20px;
     }
 
     #main-button {
-        width: 100%; /* Кнопка на всю ширину для удобства нажатия пальцем */
+        width: 100%;
     }
 }
 
