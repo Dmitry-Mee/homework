@@ -74,3 +74,19 @@ btn.onclick = function () {
 
 // 5. ЗАПУСК ПРИ ЗАГРУЗКЕ
 renderTasks();
+
+async function getQuote() {
+    const quoteElement = document.getElementById('quote-text');
+    try {
+        // Стучимся на сервер с цитатами
+        const response = await fetch('https://api.quotable.io');
+        const data = await response.json(); // Превращаем ответ в понятный JS объект
+
+        quoteElement.textContent = `"${data.content}" — ${data.author}`;
+    } catch (error) {
+        quoteElement.textContent = "Не удалось загрузить цитату :(";
+        console.log("Ошибка API:", error);
+    }
+}
+
+getQuote(); // Запускаем при загрузке
