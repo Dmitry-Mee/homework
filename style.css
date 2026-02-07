@@ -5,7 +5,10 @@
     --accent-color: #3357FF;
 }
 
-/* А это будет включаться, когда у body появится класс .dark-theme */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body.dark-theme {
     --bg-color: #1a1a1a;
     --card-bg: #2d2d2d;
@@ -29,9 +32,42 @@ body {
     background-color: var(--card-bg);
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 0px 0px rgba(0,0,0,0.1);
     text-align: center;
     width: 350px; /* Фиксируем ширину, чтобы не прыгала */
+}
+.card_game-card {
+    padding: 0px;
+}
+.game-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px; /* Одинаковое расстояние между кнопками */
+    flex-wrap: wrap; /* Если кнопки не влезают, они перейдут на новую строку */
+}
+
+    .game-buttons button {
+        flex: 1; /* Кнопки будут одинаковой ширины */
+        min-width: 80px; /* Но не меньше 80px */
+        font-size: 1rem;
+        padding: 10px 5px;
+        cursor: pointer;
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        transition: 0.2s;
+    }
+
+        .game-buttons button:hover {
+            transform: scale(1.1);
+        }
+
+#game-result {
+    font-weight: bold;
+    padding: 15px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 10px;
 }
 
 input {

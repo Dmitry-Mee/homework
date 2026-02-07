@@ -56,24 +56,36 @@ btn.onclick = function () {
     }
 };
 
-// 5. НОВАЯ ЛОГИКА: Погода (Екатеринбург)
-async function getCatFact() {
-    const factElement = document.getElementById('cat-fact');
-    const url = 'https://catfact.ninja'; // Самый стабильный API
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
+let userScore = 0;
+let compScore = 0;
 
-        console.log("Успех! Данные о кошках:", data);
-        factElement.textContent = data.fact;
+function playGame(userChoice) {
+    const choices = ['камень', 'ножницы', 'бумага'];
+    // Рандомный выбор сайта
+    const compChoice = choices[Math.floor(Math.random() * choices.length)];
+    
+    let result = "";
 
-    } catch (error) {
-        console.error("Ошибка тестового API:", error);
-        factElement.textContent = "Не удалось загрузить даже котиков :(";
+    if (userChoice === compChoice) {
+        result = "Ничья! 🤝";
+    } else if (
+        (userChoice === 'камень' && compChoice === 'ножницы') ||
+        (userChoice === 'ножницы' && compChoice === 'бумага') ||
+        (userChoice === 'бумага' && compChoice === 'камень')
+    ) {
+        result = "Вы победили! 🎉";
+        userScore++;
+    } else {
+        result = "Вы проиграли! 🤖";
+        compScore++;
     }
-}
 
-getCatFact(); // Запускаем
+    // Выводим результат на страницу
+    document.getElementById('game-text').innerHTML = 
+        `Вы выбрали: <b>${userChoice}</b><br>Сайт выбрал: <b>${compChoice}</b><br>${result}`;
+    
+    document.getElementById('score').textContent = `Вы: ${userScore} | Сайт: ${compScore}`;
+}
 
 renderTasks();

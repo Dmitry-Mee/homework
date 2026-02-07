@@ -6,19 +6,23 @@
     <div class="card">
         <button id="theme-toggle">Сменить тему</button>
         <h1>Дмитрий</h1>
-        <div id="weather-info">
-            <span id="city">Екатеринбург:</span>
-            <span id="temp-value">...</span>
-            <span id="weather-desc"></span>
-        </div>
-        <div id="test-api">
-            <p>Факт о кошках: <span id="cat-fact">Загрузка...</span></p>
-        </div>
         <p id="dynamic-text">Я учусь на Frontend-разработчика</p>
         <input type="text" id="user-input" placeholder="Введи своё имя">
         <button id="main-button">Нажми меня</button>
-        <ul id="todo-list">
-        </ul>
+        <ul id="todo-list"></ul>
+        <div class="card_game-card">
+            <h2>Камень, Ножницы, Бумага</h2>
+            <div class="game-buttons">
+                <button onclick="playGame('камень')">🪨 Камень</button>
+                <button onclick="playGame('ножницы')">✂️ Ножницы</button>
+                <button onclick="playGame('бумага')">📄 Бумага</button>
+            </div>
+            <div id="game-result">
+                <p id="game-text">Выберите предмет, чтобы начать игру</p>
+                <p id="score">Вы: 0 | Сайт: 0</p>
+            </div>
+        </div>
+
     </div>
     <script src="script.js"></script> <!-- Подключаем JS в самом конце body -->
 </body>
