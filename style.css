@@ -74,6 +74,9 @@ input:focus {
             cursor: pointer;
         }
 @media (max-width: 600px) {
+    body {
+        background-color: lightblue; /* На мобилках фон станет голубым */
+    }
     .card {
         width: 90%; /* На маленьких экранах карточка почти на всю ширину */
         padding: 20px; /* Уменьшаем внутренние отступы */
