@@ -94,4 +94,4 @@ async function getFact() {
     }
 }
 
-getFact(); // Вызываем при загрузке
+<script src="https://www.gismeteo.ru"></script>

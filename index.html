@@ -6,13 +6,22 @@
     <div class="card">
         <button id="theme-toggle">Сменить тему</button>
         <h1>Дмитрий</h1>
-        <p id="quote-text">Загружаю рандомный факт...</p>
+        <div id="weather-widget">
+            <!-- Сюда Gismeteo вставит свою магию -->
+            <div id="gsInformerID-your-id" class="gsInformer">
+                <div class="gsI_body">
+                    <a href="https://www.gismeteo.ru/weather-yekaterinburg-4517"
+" target="_blank">Погода в Екатеринбурге</a>
+        </div>
+    </div>
+</div>
+
         <p id="dynamic-text">Я учусь на Frontend-разработчика</p>
         <input type="text" id="user-input" placeholder="Введи своё имя">
         <button id="main-button">Нажми меня</button>
         <ul id="todo-list">
         </ul>
-    </div>
+                </div>
 
-    <script src="script.js"></script> <!-- Подключаем JS в самом конце body -->
+                <script src="script.js"></script> <!-- Подключаем JS в самом конце body -->
 </body>
