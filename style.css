@@ -14,6 +14,10 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     text-align: center;
 }
-.button {
+#main-button {
     border: none;
+    transition: 0.3s;
+    padding: 15px 30px;
+    border-radius: 50px;
+    cursor: pointer;
 }
