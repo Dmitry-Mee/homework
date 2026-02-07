@@ -32,3 +32,34 @@ input {
     border-radius: 50px;
     cursor: pointer;
 }
+    /* Эффект для кнопки при наведении */
+    #main-button:hover {
+        transform: scale(1.1); /* Увеличиваем кнопку на 10% */
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Усиливаем тень */
+    }
+
+    /* Эффект при нажатии (клик) */
+    #main-button:active {
+        transform: scale(0.95); /* Немного уменьшаем при клике */
+    }
+
+/* Сделаем само поле ввода чуть симпатичнее при фокусе */
+input:focus {
+    outline: none;
+    border-color: #3357FF; /* Цвет рамки при нажатии внутрь */
+    box-shadow: 0 0 5px rgba(51, 87, 255, 0.5);
+}
+#todo-list {
+    list-style: none; /* Убираем точки */
+    padding: 0; /* Убираем внутренний отступ */
+    margin-top: 20px; /* Отступ от кнопки сверху */
+    text-align: left; /* Текст списка по левому краю */
+}
+
+    #todo-list li {
+        background: #eee;
+        margin-bottom: 5px;
+        padding: 8px;
+        border-radius: 4px;
+        border-left: 5px solid #3357FF; /* Красивая полоска сбоку */
+    }
