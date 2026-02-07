@@ -1,9 +1,11 @@
 ﻿const btn = document.getElementById('main-button');
 const textElement = document.getElementById('dynamic-text');
-const input = document.getElementById('user-input'); // Находим поле ввода
+const input = document.getElemetById('user-input'); // Находим поле ввода
 const list = document.getElementById('todo-list');
 
 btn.onclick = function () {
+    console.log("Кнопка нажата! Введено имя: ", userName);
+
     const userName = input.value; // Забираем текст из поля
 
     if (userName === "") {
@@ -46,8 +48,10 @@ btn.onclick = function () {
 
         // 3. Логика удаления: при клике на ЭТУ кнопку, удаляем ЭТОТ li
         deleteBtn.onclick = function () {
-            newEntry.remove(); // Магия! Элемент исчезает со страницы
+            console.warn("Удаляем пользователя: " + userName); // Выведет желтое предупреждение
+            newEntry.remove();
         };
+
 
         // 4. Собираем конструктор: кладем кнопку ВНУТРЬ li, а li — ВНУТРЬ списка
         newEntry.appendChild(deleteBtn);
