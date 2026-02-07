@@ -34,15 +34,27 @@ btn.onclick = function () {
 
         // --- РАБОТА СО СПИСКОМ ---
 
-        // 1. Создаем новый тег li
+        // 1. Создаем элемент списка
         const newEntry = document.createElement('li');
+        newEntry.textContent = "Пользователь: " + userName + " "; // Добавим пробел в конце
 
-        // 2. Пишем в него текст (имя пользователя)
-        newEntry.textContent = "Пользователь: " + userName;
+        // 2. Создаем кнопку удаления внутри этого li
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = "Удалить";
+        deleteBtn.style.marginLeft = "10px"; // Небольшой отступ
+        deleteBtn.style.padding = "2px 8px"; // Сделаем её поменьше основной
 
-        // 3. Добавляем этот li внутрь нашего ul (списка)
+        // 3. Логика удаления: при клике на ЭТУ кнопку, удаляем ЭТОТ li
+        deleteBtn.onclick = function () {
+            newEntry.remove(); // Магия! Элемент исчезает со страницы
+        };
+
+        // 4. Собираем конструктор: кладем кнопку ВНУТРЬ li, а li — ВНУТРЬ списка
+        newEntry.appendChild(deleteBtn);
         list.appendChild(newEntry);
 
+        // 5. Очищаем поле ввода
         input.value = "";
+
     }
     }
