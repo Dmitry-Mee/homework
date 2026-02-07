@@ -69,24 +69,29 @@ btn.onclick = function () {
         localStorage.setItem('lastUser', userName);
         saveAndRender();
         input.value = "";
+        getFact();
     }
 };
 
 // 5. ЗАПУСК ПРИ ЗАГРУЗКЕ
 renderTasks();
 
-async function getQuote() {
+async function getFact() {
     const quoteElement = document.getElementById('quote-text');
     try {
-        // Стучимся на сервер с цитатами
-        const response = await fetch('https://api.quotable.io');
-        const data = await response.json(); // Превращаем ответ в понятный JS объект
+        // Запрашиваем случайный факт на английском
+        const response = await fetch('https://uselessfacts.jsph.pl');
+        const data = await response.json();
 
-        quoteElement.textContent = `"${data.content}" — ${data.author}`;
+        // Выводим факт на страницу
+        quoteElement.textContent = "Интересный факт: " + data.text;
+        quoteElement.style.fontStyle = "italic";
+        quoteElement.style.fontSize = "0.9em";
+        quoteElement.style.marginTop = "10px";
     } catch (error) {
-        quoteElement.textContent = "Не удалось загрузить цитату :(";
-        console.log("Ошибка API:", error);
+        quoteElement.textContent = "Не удалось загрузить факт :(";
+        console.error("Ошибка API:", error);
     }
 }
 
-getQuote(); // Запускаем при загрузке
+getFact(); // Вызываем при загрузке
