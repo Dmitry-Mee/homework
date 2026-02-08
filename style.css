@@ -48,7 +48,11 @@ body {
     border-radius: 20px;
     box-shadow: 0 0px 0px rgba(0,0,0,0.1);
     text-align: center;
-    width: 350px; /* Фиксируем ширину, чтобы не прыгала */
+    width: 90%; /* На мобильных занимает почти всю ширину */
+    max-width: 600px; /* На компах не шире 600px */
+    margin: 20px auto; /* Центрируем */
+    padding: 20px;
+    box-sizing: border-box; /* Чтобы padding не раздувал ширину */
 }
 
 .card_game-card {
