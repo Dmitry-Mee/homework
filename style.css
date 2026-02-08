@@ -57,8 +57,24 @@ body {
 
 .card_game-card {
     padding: 0px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+/* Эффект при победе */
+.win-flash {
+    background-color: rgba(46, 204, 113, 0.3) !important; /* Светло-зеленый */
+    transform: scale(1.02);
 }
 
+/* Эффект при проигрыше */
+.lose-flash {
+    background-color: rgba(231, 76, 60, 0.3) !important; /* Светло-красный */
+    transform: scale(0.98);
+}
+
+/* Эффект при ничьей */
+.tie-flash {
+    background-color: rgba(241, 196, 15, 0.3) !important; /* Желтый */
+}
 .game-buttons {
     display: flex;
     justify-content: space-around;

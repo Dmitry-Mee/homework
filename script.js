@@ -94,21 +94,25 @@ function playGame(userChoice) {
     // 3. Логика победы
     let resultText = "";
     let currentRoundResult = ""; // для весов
+    const gameCard = document.querySelector('.card_game-card'); // Находим карточку
+    let flashClass = "";
 
     if (userChoice === compChoice) {
         resultText = "Ничья! 🤝";
-        currentRoundResult = "tie";
+        flashClass = "tie-flash";
     } else if (beats[userChoice] === compChoice) {
         resultText = "Вы победили! 🎉";
         userScore++;
-        currentRoundResult = "user";
-        strategyWeights[bestStrat] -= 0.5; // Стратегия ошиблась — понижаем доверие
+        flashClass = "win-flash";
     } else {
         resultText = "Вы проиграли! 🤖";
         compScore++;
-        currentRoundResult = "comp";
-        strategyWeights[bestStrat] += 1; // Стратегия сработала — повышаем вес
+        flashClass = "lose-flash";
     }
+    gameCard.classList.add(flashClass);
+    setTimeout(() => {
+        gameCard.classList.remove(flashClass);
+    }, 500);
 
     userHistory.push(userChoice);
 
