@@ -59,33 +59,65 @@ btn.onclick = function () {
 
 let userScore = 0;
 let compScore = 0;
+let userHistory = [];
+// Веса стратегий: какая чаще выигрывает, ту бот и слушает
+let strategyWeights = { repeat: 1, frequent: 1, sequence: 1 };
+
+const beats = { 'камень': 'ножницы', 'ножницы': 'бумага', 'бумага': 'камень' };
+const losesTo = { 'ножницы': 'камень', 'бумага': 'ножницы', 'камень': 'бумага' };
+const choices = ['камень', 'ножницы', 'бумага'];
 
 function playGame(userChoice) {
-    const choices = ['камень', 'ножницы', 'бумага'];
-    // Рандомный выбор сайта
-    const compChoice = choices[Math.floor(Math.random() * choices.length)];
-    
-    let result = "";
+    // 1. Прогнозы разных стратегий
+    const predicts = {
+        repeat: userHistory.length > 0 ? losesTo[userHistory[userHistory.length - 1]] : choices[Math.floor(Math.random() * 3)],
+        frequent: (() => {
+            if (userHistory.length === 0) return choices[Math.floor(Math.random() * 3)];
+            const counts = userHistory.reduce((acc, m) => { acc[m]++; return acc; }, { 'камень': 0, 'ножницы': 0, 'бумага': 0 });
+            const mostFreq = Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
+            return losesTo[mostFreq];
+        })(),
+        sequence: (() => {
+            if (userHistory.length < 2) return choices[Math.floor(Math.random() * 3)];
+            const last = userHistory[userHistory.length - 1];
+            for (let i = userHistory.length - 2; i >= 0; i--) {
+                if (userHistory[i] === last && i + 1 < userHistory.length) return losesTo[userHistory[i + 1]];
+            }
+            return choices[Math.floor(Math.random() * 3)];
+        })()
+    };
+
+    // 2. Выбор лучшей стратегии на основе весов
+    const bestStrat = Object.keys(strategyWeights).reduce((a, b) => strategyWeights[a] > strategyWeights[b] ? a : b);
+    let compChoice = predicts[bestStrat];
+
+    // 3. Логика победы
+    let resultText = "";
+    let currentRoundResult = ""; // для весов
 
     if (userChoice === compChoice) {
-        result = "Ничья! 🤝";
-    } else if (
-        (userChoice === 'камень' && compChoice === 'ножницы') ||
-        (userChoice === 'ножницы' && compChoice === 'бумага') ||
-        (userChoice === 'бумага' && compChoice === 'камень')
-    ) {
-        result = "Вы победили! 🎉";
+        resultText = "Ничья! 🤝";
+        currentRoundResult = "tie";
+    } else if (beats[userChoice] === compChoice) {
+        resultText = "Вы победили! 🎉";
         userScore++;
+        currentRoundResult = "user";
+        strategyWeights[bestStrat] -= 0.5; // Стратегия ошиблась — понижаем доверие
     } else {
-        result = "Вы проиграли! 🤖";
+        resultText = "Вы проиграли! 🤖";
         compScore++;
+        currentRoundResult = "comp";
+        strategyWeights[bestStrat] += 1; // Стратегия сработала — повышаем вес
     }
 
-    // Выводим результат на страницу
-    document.getElementById('game-text').innerHTML = 
-        `Вы выбрали: <b>${userChoice}</b><br>Сайт выбрал: <b>${compChoice}</b><br>${result}`;
-    
+    userHistory.push(userChoice);
+
+    // 4. Обновление интерфейса
+    document.getElementById('game-text').innerHTML = `Вы: ${userChoice} | Сайт: ${compChoice}<br><b>${resultText}</b>`;
     document.getElementById('score').textContent = `Вы: ${userScore} | Сайт: ${compScore}`;
 }
+
+
+
 
 renderTasks();
