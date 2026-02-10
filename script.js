@@ -120,6 +120,26 @@ function playGame(userChoice) {
     document.getElementById('game-text').innerHTML = `Вы: ${userChoice} | Сайт: ${compChoice}<br><b>${resultText}</b>`;
     document.getElementById('score').textContent = `Вы: ${userScore} | Сайт: ${compScore}`;
 }
+const display = document.getElementById('calc-display');
+
+function appendToDisplay(input) {
+    display.value += input;
+}
+
+function clearDisplay() {
+    display.value = "";
+}
+
+function calculate() {
+    try {
+        // eval() выполняет строку как код. 
+        // На собеседовании скажи, что знаешь об опасностях eval, но для учебного проекта это допустимо.
+        display.value = eval(display.value);
+    } catch (error) {
+        display.value = "Ошибка";
+        setTimeout(clearDisplay, 1500); // Очистить через 1.5 сек
+    }
+}
 
 
 
